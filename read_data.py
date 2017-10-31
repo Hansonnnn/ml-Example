@@ -19,3 +19,7 @@ def get_data():
     test_data = model_matrix[int(len(model_matrix)*p):,:]
 
     return train_data, test_data
+
+
+if  __name__ =="__main__" :
+   print(get_data())

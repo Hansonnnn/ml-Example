@@ -8,8 +8,6 @@ outputfile = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/missing_data_pr
 
 data = pd.read_excel(inputfile, header=None)
 
-
-
 def ployinterp_column(s, n, k=5):
     y = s[list(range(n - k, n)) + list(range(n + 1, n + 1 + k))]
     y = y[y.notnull()]
