@@ -12,14 +12,14 @@ def get_data():
 
     shuffle(model_matrix)
 
-    p = 0.8 # ratio of training
+    p = 0.8  # ratio of training
 
-    train_data = model_matrix[:int(len(model_matrix)*p),:]
+    train_data = model_matrix[:int(len(model_matrix) * p), :]
 
-    test_data = model_matrix[int(len(model_matrix)*p):,:]
+    test_data = model_matrix[int(len(model_matrix) * p):, :]
 
     return train_data, test_data
 
 
-if  __name__ =="__main__" :
-   print(get_data())
+if __name__ == "__main__":
+    print(get_data())
