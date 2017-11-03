@@ -1,12 +1,14 @@
-"""@description LM Classifier"""
+"""@description training with LM Classifier and cart classifier"""
 from keras.models import Sequential
 
 from keras.layers.core import Dense, Activation  # neural network ,activation function
 
 from read_data import get_data
-from cm_plot import cm_plot
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.externals import joblib
 
-netfile = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/net.h5'  # path to model
+netfile = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/net.h5'  # path with LM model
+treefile = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/tree.pkl'  # path with cart model
 
 
 def train_lm_classification():
@@ -24,9 +26,9 @@ def train_lm_classification():
 
     net.save(netfile)
 
-    predict_result = net.predict_classes(train[:, :3]).reshape(len(train))  ## transform result
 
-    cm_plot(train[:, 3], predict_result).show()
-
-
-train_lm_classification()
+def train_cart_classification():
+    tree = DecisionTreeClassifier()
+    train = get_data()[0]
+    tree.fit(train[:, :3], train[:, 3])
+    joblib.dump(tree, treefile)  # save training model by joblib
