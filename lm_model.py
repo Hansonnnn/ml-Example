@@ -1,32 +1,17 @@
-"""@description LM Classifier"""
 from keras.models import Sequential
-
-from keras.layers.core import Dense, Activation  # neural network ,activation function
 
 from read_data import get_data
 from cm_plot import cm_plot
+from keras.models import load_model
 
-netfile = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/net.model'  # path to model
+net_file = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/net.h5'
 
 
-def lm_classification():
-    # init net
-    net = Sequential()
-
-    net.add(Dense(input_dim=3, output_dim=10))  # input to hide
-    net.add(Activation('relu'))  # relu function between their
-    net.add(Dense(input_dim=10, output_dim=1))  # hide to output
-    net.add(Activation('sigmoid'))  # sigmoid's function between their
-    net.compile(loss='binary_crossentropy', optimizer='adam')  ## use adam
+def lm_model():
     train = get_data()[0]
-
-    net.fit(train[:, :3], train[:, 3], nb_epoch=1000, batch_size=1)  # train model ,1000's loop
-
-    net.save_weights(netfile)
-
-    predict_result = net.predict_classes(train[:, :3]).reshape(len(train))  ## transform result
-
-    cm_plot(train[:, 3], predict_result).show()
+    test = get_data()[1]
+    net = load_model(net_file)
+    predict_result = net.predict_classes(test[:, :3]).reshape(len(test))  ## transform result
+    cm_plot(test[:, 3], predict_result).show()
 
 
-lm_classification()
