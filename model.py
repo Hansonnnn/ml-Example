@@ -1,15 +1,14 @@
 """@description test lm model & cart model"""
 
-from read_data import get_data
+from handle_data import get_data
 from cm_plot import cm_plot
 from keras.models import load_model
 from sklearn.externals import joblib
-
-net_file = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/net.h5'
-tree_file = '/Users/hanzhao/PycharmProjects/ml-example/file/tmp/tree.pkl'
+from common_util import get_path
 
 
 def lm_model():
+    net_file = get_path('section2', 'net_file')
     train = get_data()[0]
     test = get_data()[1]
     net = load_model(net_file)
@@ -18,7 +17,7 @@ def lm_model():
 
 
 def cart_model():
-
+    tree_file = get_path('section2', 'tree_file')
     train = get_data()[0]
     test = get_data()[1]
     cart = joblib.load(tree_file)
