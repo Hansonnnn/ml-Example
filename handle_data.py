@@ -3,6 +3,9 @@
 import pandas as pd
 from random import shuffle
 from common_util import get_path
+import warnings
+
+warnings.filterwarnings('ignore')
 
 
 def get_data():
@@ -31,7 +34,7 @@ def explore_data():
 
 def clean_data():
     source_data_path = get_path('section1', 'source_data_path')
-    clean_data_path = get_path('section1','clean_data_path')
+    clean_data_path = get_path('section1', 'clean_data_path')
     data = pd.read_csv(source_data_path, encoding='utf-8')
     data = data[data['SUM_YR_1'].notnull() * data['SUM_YR_2'].notnull()]
     index1 = data['SUM_YR_1'] != 0
@@ -46,12 +49,9 @@ def standrand_data():
     data = pd.read_excel(lrmfc_data_path)
     data = (data - data.mean(axis=0)) / (data.std(axis=0))
     data.columns = ['Z' + i for i in data.columns]
-    zscored_data_path =get_path('section1', 'zscored_data_path')
+    zscored_data_path = get_path('section1', 'zscored_data_path')
     data.to_excel(zscored_data_path, index=False)
 
 
 
 
-if __name__ == "__main__":
-
-    get_data()
