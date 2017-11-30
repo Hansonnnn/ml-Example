@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+from scipy.stats import norm
+
 
 
 class HousePrice(object):
@@ -40,15 +44,39 @@ class HousePrice(object):
         missing_data = pd.concat([total,percent],axis=1,keys=['Total','Percent'])
         df_train = df_train.drop((missing_data[missing_data['Total']>1]).index,1)
         df_train = df_train.drop(df_train.loc[df_train['Electrical'].isnull()].index)
+        self.out_liars(df_train)
         print(df_train.isnull().sum().max())
 
 
-    def out_liars(self):
-        """TODO handle something that out liars"""
+    def out_liars(self,deleted_data):
+        """TODO handle datas that out liars"""
+        df_train = deleted_data
+        # deleting points
+        df_train.sort_values(by='GrLivArea', ascending=False)[:2]
+        df_train = df_train.drop(df_train[df_train['Id'] == 1299].index)
+        df_train = df_train.drop(df_train[df_train['Id'] == 524].index)
+        self.normality_explore(df_train)
 
-        pass
 
 
+    def normality_explore(self,handled_data):
+        """Normality
+           1.Kurtosis and skewness.
+           2.Normal distribution
+           3.make it close to Normal distribution
+           4.transformate in log()
+        """
+        df_train = handled_data
+        df_train['SalePrice'] = np.log(df_train['SalePrice'])
+        # sns.distplot(df_train['SalePrice'],fit=norm)
+        # fig = plt.figure()
+        # res = stats.probplot(df_train['SalePrice'],plot=plt)
+        df_train['GrLivArea'] = np.log(df_train['GrLivArea'])
+        df_train['HasBsmt'] = pd.Series(len(df_train['TotalBsmtSF']), index=df_train.index)
+        df_train['HasBsmt'] = 0
+        df_train.loc[df_train['TotalBsmtSF'] > 0, 'HasBsmt'] = 1
+        df_train.loc[df_train['HasBsmt'] == 1, 'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
+        df_train =pd.get_dummies(df_train)
 
 
 
