@@ -4,7 +4,15 @@ import seaborn as sns
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
+import scipy.stats as st
 from scipy.stats import norm
+# import xgboost as xgb
+from sklearn.model_selection import KFold
+from IPython.display import HTML, display
+from sklearn.manifold import TSNE
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 
 
@@ -79,6 +87,52 @@ class HousePrice(object):
         df_train =pd.get_dummies(df_train)
 
 
+    def price_eda(self):
+
+        pd.options.display.max_rows = 1000
+        pd.options.display.max_columns = 20
+
+        train = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
+        test = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
+
+        quantitative = [f for f in train.columns if train.dtypes[f] !='object']
+        quantitative.remove('SalePrice')
+        quantitative.remove('Id')
+        qualitative = [f for f in train.columns if train.dtypes[f] == 'object']
+
+        # missing = train.isnull().sum()
+        # missing = missing[missing > 0]
+        # missing.sort_values(inplace=True)
+        # missing.plot.bar()
+        # plt.show()
+
+        # y = train['SalePrice']
+        # plt.figure(1);plt.title('johnson su')
+        # sns.distplot(y,kde=True,fit=st.johnsonsu)
+        # plt.figure(2);plt.title('Normal')
+        # sns.distplot(y,kde=True,fit=st.norm)
+        # plt.figure(3);plt.title('Log Norm')
+        # sns.distplot(y,kde=True,fit=st.lognorm)
+        # plt.show()
+        """ shapiro, check normality"""
+        # test_normality = lambda x: stats.shapiro(x.fillna(0))[1] < 0.01
+        # normal = pd.DataFrame(train[quantitative])
+        # normal = normal.apply(test_normality)
+        # print(not normal.any())
+        # f = pd.melt(train,value_vars=quantitative)
+        # g = sns.FacetGrid(f,col="variable",col_wrap=2,sharex=False,sharey=False)
+        # g = g.map(sns.distplot,"value")
+        # plt.show()
+
+
+
+
+
+
+
+
+
+
 
 hp = HousePrice()
-hp.missing_data()
+hp.price_eda()
