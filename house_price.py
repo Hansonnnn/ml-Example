@@ -15,7 +15,6 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 
-
 class HousePrice(object):
     def explore_data(self):
         df_train = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
@@ -41,22 +40,21 @@ class HousePrice(object):
         #                  yticklabels=cols.values, xticklabels=cols.values)
         # plt.show()
         sns.set()
-        cols =['SalePrice', 'OverallQual', 'GrLivArea', 'GarageCars', 'TotalBsmtSF', 'FullBath', 'YearBuilt']
+        cols = ['SalePrice', 'OverallQual', 'GrLivArea', 'GarageCars', 'TotalBsmtSF', 'FullBath', 'YearBuilt']
         sns.pairplot(df_train[cols])
         plt.show()
 
     def missing_data(self):
         df_train = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
         total = df_train.isnull().sum().sort_values(ascending=True)
-        percent = (df_train.isnull().sum()/df_train.isnull().count()).sort_values(ascending=True)
-        missing_data = pd.concat([total,percent],axis=1,keys=['Total','Percent'])
-        df_train = df_train.drop((missing_data[missing_data['Total']>1]).index,1)
+        percent = (df_train.isnull().sum() / df_train.isnull().count()).sort_values(ascending=True)
+        missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
+        df_train = df_train.drop((missing_data[missing_data['Total'] > 1]).index, 1)
         df_train = df_train.drop(df_train.loc[df_train['Electrical'].isnull()].index)
         self.out_liars(df_train)
         print(df_train.isnull().sum().max())
 
-
-    def out_liars(self,deleted_data):
+    def out_liars(self, deleted_data):
         """TODO handle datas that out liars"""
         df_train = deleted_data
         # deleting points
@@ -65,9 +63,7 @@ class HousePrice(object):
         df_train = df_train.drop(df_train[df_train['Id'] == 524].index)
         self.normality_explore(df_train)
 
-
-
-    def normality_explore(self,handled_data):
+    def normality_explore(self, handled_data):
         """Normality
            1.Kurtosis and skewness.
            2.Normal distribution
@@ -84,18 +80,16 @@ class HousePrice(object):
         df_train['HasBsmt'] = 0
         df_train.loc[df_train['TotalBsmtSF'] > 0, 'HasBsmt'] = 1
         df_train.loc[df_train['HasBsmt'] == 1, 'TotalBsmtSF'] = np.log(df_train['TotalBsmtSF'])
-        df_train =pd.get_dummies(df_train)
-
+        df_train = pd.get_dummies(df_train)
 
     def price_eda(self):
-
         pd.options.display.max_rows = 1000
         pd.options.display.max_columns = 20
 
         train = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
         test = pd.read_csv('/Users/hanzhao/PycharmProjects/ml-example/file/data/train.csv')
 
-        quantitative = [f for f in train.columns if train.dtypes[f] !='object']
+        quantitative = [f for f in train.columns if train.dtypes[f] != 'object']
         quantitative.remove('SalePrice')
         quantitative.remove('Id')
         qualitative = [f for f in train.columns if train.dtypes[f] == 'object']
@@ -123,15 +117,6 @@ class HousePrice(object):
         # g = sns.FacetGrid(f,col="variable",col_wrap=2,sharex=False,sharey=False)
         # g = g.map(sns.distplot,"value")
         # plt.show()
-
-
-
-
-
-
-
-
-
 
 
 hp = HousePrice()
