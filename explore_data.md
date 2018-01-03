@@ -82,7 +82,7 @@
 
 ###### 计算相关系数
 
-![image](../file/pics/corrcoef.png)
+![image](file/pics/corrcoef.png)
 
 1）Pearson系数
 
