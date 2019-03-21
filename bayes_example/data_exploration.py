@@ -17,7 +17,7 @@ from sklearn.naive_bayes import MultinomialNB
 
 import xgboost as xgb
 
-random_seed = 3000
+random_seed = 2000
 
 
 def load_data():
